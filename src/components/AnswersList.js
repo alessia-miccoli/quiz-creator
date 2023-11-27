@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Answer from "./Answer";
 import { useParams } from "react-router-dom";
 
-const QuestionCard = ({ answers, setAnswers }) => {
+const AnswersList = ({ answers, setAnswers }) => {
   const [newAnswerVisible, setNewAnswerVisible] = useState(false);
   const [currentText, setCurrentText] = useState("");
   const [isCurrentCorrect, setIsCurrentCorrect] = useState(false);
@@ -61,7 +61,7 @@ const QuestionCard = ({ answers, setAnswers }) => {
   }, [isCurrentCorrect]);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
       <button type="button" onClick={() => setNewAnswerVisible(true)}>
         New Answer
       </button>
@@ -108,8 +108,8 @@ const QuestionCard = ({ answers, setAnswers }) => {
             />
           ))}
       </ul>
-    </form>
+    </>
   );
 };
 
-export default QuestionCard;
+export default AnswersList;
