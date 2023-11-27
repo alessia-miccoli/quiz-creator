@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 
 const NewQuiz = () => {
   const [numOfQuestions, setNumOfQuestions] = useState(5);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const navigate = useNavigate();
+
+  const currentNumOfQuiz = 3;
 
   const handleSetNumOfQuestions = (e) => {
     setNumOfQuestions(e.target.value);
@@ -19,6 +23,8 @@ const NewQuiz = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    navigate(`/quiz-${currentNumOfQuiz + 1}/question-0`);
   };
 
   return (
