@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Answer from "./Answer";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 
-const QuestionCard = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
-  const [answers, setAnswers] = useState([]);
+const QuestionCard = ({ answers, setAnswers }) => {
   const [newAnswerVisible, setNewAnswerVisible] = useState(false);
   const [currentText, setCurrentText] = useState("");
   const [isCurrentCorrect, setIsCurrentCorrect] = useState(false);
   const [itemToEditId, setItemToEditId] = useState(null);
   const [error, setError] = useState();
   const { questionId } = useParams();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   const handleSetCurrent = (e) => {
     setCurrentText(e.target.value);
@@ -62,56 +61,54 @@ const QuestionCard = () => {
   }, [isCurrentCorrect]);
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <button type="button" onClick={() => setNewAnswerVisible(true)}>
-          New Answer
-        </button>
-        {newAnswerVisible && (
-          <div>
-            <label htmlFor="question-text">Description:</label>
-            <textarea
-              id="question-text"
-              value={currentText}
-              onChange={handleSetCurrent}
+    <form onSubmit={handleSubmit}>
+      <button type="button" onClick={() => setNewAnswerVisible(true)}>
+        New Answer
+      </button>
+      {newAnswerVisible && (
+        <div>
+          <label htmlFor="question-text">Description:</label>
+          <textarea
+            id="question-text"
+            value={currentText}
+            onChange={handleSetCurrent}
+          />
+          <input
+            type="radio"
+            id="current-correct"
+            value="correct"
+            onChange={() => setIsCurrentCorrect(true)}
+            checked={isCurrentCorrect}
+          />
+          <label htmlFor="current-correct">Correct</label>
+          <input
+            type="radio"
+            id="current-incorrect"
+            value="incorrect"
+            onChange={() => setIsCurrentCorrect(false)}
+            checked={!isCurrentCorrect}
+          />
+          <label htmlFor="current-incorrect">Incorrect</label>
+          {error && <p>{error}</p>}
+          <button type="button" onClick={handleSaveAnswer} disabled={!!error}>
+            {itemToEditId ? "Save" : "Add"}
+          </button>
+        </div>
+      )}
+      <ul>
+        {answers &&
+          answers.map((answer) => (
+            <Answer
+              key={`${questionId}-answer-${answer.id}`}
+              answer={answer}
+              setNewAnswerVisible={setNewAnswerVisible}
+              setCurrentText={setCurrentText}
+              setIsCurrentCorrect={setIsCurrentCorrect}
+              setItemToEditId={setItemToEditId}
             />
-            <input
-              type="radio"
-              id="current-correct"
-              value="correct"
-              onChange={() => setIsCurrentCorrect(true)}
-              checked={isCurrentCorrect}
-            />
-            <label htmlFor="current-correct">Correct</label>
-            <input
-              type="radio"
-              id="current-incorrect"
-              value="incorrect"
-              onChange={() => setIsCurrentCorrect(false)}
-              checked={!isCurrentCorrect}
-            />
-            <label htmlFor="current-incorrect">Incorrect</label>
-            {error && <p>{error}</p>}
-            <button type="button" onClick={handleSaveAnswer} disabled={!!error}>
-              {itemToEditId ? "Save" : "Add"}
-            </button>
-          </div>
-        )}
-        <ul>
-          {answers &&
-            answers.map((answer) => (
-              <Answer
-                key={`${questionId}-answer-${answer.id}`}
-                answer={answer}
-                setNewAnswerVisible={setNewAnswerVisible}
-                setCurrentText={setCurrentText}
-                setIsCurrentCorrect={setIsCurrentCorrect}
-                setItemToEditId={setItemToEditId}
-              />
-            ))}
-        </ul>
-      </form>
-    </div>
+          ))}
+      </ul>
+    </form>
   );
 };
 
