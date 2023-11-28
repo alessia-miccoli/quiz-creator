@@ -2,7 +2,6 @@ import React from "react";
 
 const Answer = ({
   answer,
-  setNewAnswerVisible,
   setCurrentText,
   setIsCurrentCorrect,
   setItemToEditId,
@@ -13,12 +12,14 @@ const Answer = ({
     setCurrentText(text);
     setIsCurrentCorrect(is_true);
     setItemToEditId(id);
-    setNewAnswerVisible(true);
   };
 
   return (
     <li>
-      {text} <button onClick={handleEditAnswer}>Edit</button>
+      {text}
+      <button type="button" onClick={handleEditAnswer}>
+        Edit
+      </button>
     </li>
   );
 };

@@ -28,9 +28,9 @@ const NewQuiz = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <div className="newQuiz">
+      <form onSubmit={handleSubmit} className="newQuizForm">
+        <div className="row">
           <label htmlFor="title">Title:</label>
           <input
             id="title"
@@ -39,7 +39,7 @@ const NewQuiz = () => {
             onChange={handleSetTitle}
           />
         </div>
-        <div>
+        <div className="row">
           <label htmlFor="description">Description:</label>
           <textarea
             id="description"
@@ -47,7 +47,7 @@ const NewQuiz = () => {
             onChange={handleSetDescription}
           />
         </div>
-        <div>
+        <div className="row">
           <label htmlFor="numOfQuestions">Number of questions:</label>
           <input
             id="numOfQuestions"
@@ -56,7 +56,11 @@ const NewQuiz = () => {
             onChange={handleSetNumOfQuestions}
           />
         </div>
-        <button type="submit">Start</button>
+        <div className="button-container">
+          <button className="button" type="submit">
+            Start
+          </button>
+        </div>
       </form>
     </div>
   );

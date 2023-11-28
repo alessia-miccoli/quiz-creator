@@ -3,7 +3,6 @@ import Answer from "./Answer";
 import { useParams } from "react-router-dom";
 
 const AnswersList = ({ answers, setAnswers }) => {
-  const [newAnswerVisible, setNewAnswerVisible] = useState(false);
   const [currentText, setCurrentText] = useState("");
   const [isCurrentCorrect, setIsCurrentCorrect] = useState(false);
   const [itemToEditId, setItemToEditId] = useState(null);
@@ -43,7 +42,6 @@ const AnswersList = ({ answers, setAnswers }) => {
       });
     }
 
-    setNewAnswerVisible(false);
     setCurrentText("");
     setIsCurrentCorrect(false);
     setItemToEditId();
@@ -61,18 +59,19 @@ const AnswersList = ({ answers, setAnswers }) => {
   }, [isCurrentCorrect]);
 
   return (
-    <>
-      <button type="button" onClick={() => setNewAnswerVisible(true)}>
-        New Answer
-      </button>
-      {newAnswerVisible && (
-        <div>
+    <div className="answersContainer">
+      {!answers.length && <div>No answers yet</div>}
+
+      <div className="answersForm">
+        <div className="row">
           <label htmlFor="question-text">Description:</label>
           <textarea
             id="question-text"
             value={currentText}
             onChange={handleSetCurrent}
           />
+        </div>
+        <div className="row">
           <input
             type="radio"
             id="current-correct"
@@ -81,6 +80,8 @@ const AnswersList = ({ answers, setAnswers }) => {
             checked={isCurrentCorrect}
           />
           <label htmlFor="current-correct">Correct</label>
+        </div>
+        <div className="row">
           <input
             type="radio"
             id="current-incorrect"
@@ -89,26 +90,34 @@ const AnswersList = ({ answers, setAnswers }) => {
             checked={!isCurrentCorrect}
           />
           <label htmlFor="current-incorrect">Incorrect</label>
-          {error && <p>{error}</p>}
-          <button type="button" onClick={handleSaveAnswer} disabled={!!error}>
+        </div>
+        {error && <p>{error}</p>}
+        <div className="button-container">
+          <button
+            className="button"
+            type="button"
+            onClick={handleSaveAnswer}
+            disabled={!!error}
+          >
             {itemToEditId ? "Save" : "Add"}
           </button>
         </div>
-      )}
-      <ul>
-        {answers &&
-          answers.map((answer) => (
+      </div>
+
+      {answers.length > 0 && (
+        <ul className="answersList">
+          {answers.map((answer) => (
             <Answer
               key={`${questionId}-answer-${answer.id}`}
               answer={answer}
-              setNewAnswerVisible={setNewAnswerVisible}
               setCurrentText={setCurrentText}
               setIsCurrentCorrect={setIsCurrentCorrect}
               setItemToEditId={setItemToEditId}
             />
           ))}
-      </ul>
-    </>
+        </ul>
+      )}
+    </div>
   );
 };
 

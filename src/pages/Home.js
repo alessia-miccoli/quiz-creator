@@ -7,7 +7,7 @@ const Home = () => {
     {
       created: "2020-09-09 09:26:39",
       description: "Description",
-      id: 29,
+      id: 1,
       modified: "2020-09-09 09:26:39",
       questions_answers: [
         {
@@ -90,7 +90,7 @@ const Home = () => {
     {
       created: "2020-09-09 09:26:39",
       description: "Description",
-      id: 29,
+      id: 2,
       modified: "2020-09-09 09:26:39",
       questions_answers: [
         {
@@ -173,7 +173,7 @@ const Home = () => {
     {
       created: "2020-09-09 09:26:39",
       description: "Description",
-      id: 29,
+      id: 3,
       modified: "2020-09-09 09:26:39",
       questions_answers: [
         {
@@ -256,9 +256,11 @@ const Home = () => {
   ];
 
   return (
-    <div>
-      <Link to="/new">Create New Quiz</Link>
-      <div>
+    <div className="homepage">
+      <Link className="button" to="/new">
+        Create New Quiz
+      </Link>
+      <div className="quiz-container">
         {quizzes.length
           ? quizzes.map((quiz) => <QuizCard quizInfo={quiz} />)
           : "No quiz created yet"}
