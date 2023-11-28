@@ -102,7 +102,6 @@ const Question = () => {
     }
 
     if (currentQuestionIndex === currentQuiz.questions_answers.length - 1) {
-      debugger;
       setQuizzes((old) => {
         const quizIndex = quizzes?.findIndex(
           (quiz) => quiz.id === currentQuiz.id
