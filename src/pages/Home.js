@@ -1,17 +1,27 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import QuizCard from "../components/QuizCard";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import quizzesState from "../atoms/quizzesAtom";
+import currentQuizState from "../atoms/currentQuizAtom";
 
 const Home = () => {
   const quizzes = useRecoilValue(quizzesState);
+  const setCurrentQuiz = useSetRecoilState(currentQuizState);
+  const navigate = useNavigate();
 
   return (
     <div className="homepage">
-      <Link className="button" to={`/quiz-${quizzes?.length + 1}`}>
+      <button
+        className="button"
+        onClick={() => {
+          setCurrentQuiz({});
+          localStorage.setItem("currentQuiz", "{}");
+          navigate(`/quiz-${quizzes?.length + 1}`);
+        }}
+      >
         Create New Quiz
-      </Link>
+      </button>
       <div className="quiz-container">
         {quizzes?.length ? (
           <>

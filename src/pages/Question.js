@@ -123,6 +123,9 @@ const Question = () => {
       });
     }
 
+    setCurrentQuiz({});
+    localStorage.setItem("currentQuiz", "{}");
+
     navigate("/");
   };
 
