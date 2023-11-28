@@ -12,9 +12,13 @@ const Quiz = () => {
   const quiz_id = Number(quizId.split("-")[1]);
   const quiz = quizzes?.find((quiz) => quiz.id === quiz_id);
   const [currentQuiz, setCurrentQuiz] = useRecoilState(currentQuizState);
-  const [numOfQuestions, setNumOfQuestions] = useState(5);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [numOfQuestions, setNumOfQuestions] = useState(
+    currentQuiz?.questions_answers?.length || 5
+  );
+  const [title, setTitle] = useState(currentQuiz?.title || "");
+  const [description, setDescription] = useState(
+    currentQuiz?.description || ""
+  );
   const currentNumOfQuiz = useRecoilValue(quizzesState)?.length;
 
   const createCurrentState = () => {
@@ -39,6 +43,7 @@ const Quiz = () => {
 
     return newQuiz;
   };
+
   const navigate = useNavigate();
 
   const handleSetNumOfQuestions = (e) => {
@@ -64,12 +69,6 @@ const Quiz = () => {
     setCurrentQuiz(createCurrentState());
   }, [quizId]);
 
-  useEffect(() => {
-    setTitle(currentQuiz?.title || "");
-    setDescription(currentQuiz?.description || "");
-    setNumOfQuestions(currentQuiz?.questions_answers?.length || 5);
-  }, [currentQuiz]);
-
   return (
     <div className="newQuiz">
       <form onSubmit={handleSubmit} className="newQuizForm">
@@ -80,6 +79,7 @@ const Quiz = () => {
             type="text"
             value={title}
             onChange={handleSetTitle}
+            required
           />
         </div>
         <div className="row">
@@ -88,6 +88,7 @@ const Quiz = () => {
             id="description"
             value={description}
             onChange={handleSetDescription}
+            required
           />
         </div>
         <div className="row">
@@ -97,6 +98,7 @@ const Quiz = () => {
             type="number"
             value={numOfQuestions}
             onChange={handleSetNumOfQuestions}
+            required
           />
         </div>
         <div className="button-container">

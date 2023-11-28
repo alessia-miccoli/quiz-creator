@@ -105,19 +105,23 @@ const Question = () => {
       return;
     }
 
-    setQuizzes((old) => {
-      const quizIndex = quizzes?.findIndex(
-        (quiz) => quiz.id === currentQuiz.id
-      );
-      let newQuizzez = [...old];
-      if (quizIndex > -1) {
-        newQuizzez[quizIndex] = updateLastQuestion();
-      } else {
-        newQuizzez.push(currentQuiz);
-      }
-      localStorage.setItem("quizzes", JSON.stringify(newQuizzez));
-      return newQuizzez;
-    });
+    if (currentQuestionIndex === currentQuiz.questions_answers.length) {
+      saveCurrentQuestion();
+    } else {
+      setQuizzes((old) => {
+        const quizIndex = quizzes?.findIndex(
+          (quiz) => quiz.id === currentQuiz.id
+        );
+        let newQuizzez = [...old];
+        if (quizIndex > -1) {
+          newQuizzez[quizIndex] = updateLastQuestion();
+        } else {
+          newQuizzez.push(updateLastQuestion());
+        }
+        localStorage.setItem("quizzes", JSON.stringify(newQuizzez));
+        return newQuizzez;
+      });
+    }
 
     navigate("/");
   };
@@ -139,36 +143,45 @@ const Question = () => {
 
   return (
     <div className="questions">
-      <form onSubmit={handleSubmit} className="questionsForm">
-        <h1>{currentQuiz.title}</h1>
-        <div className="questionsDetails">
-          <div className="row">
-            <label htmlFor="question-text">Question text:</label>
-            <textarea
-              id="question-text"
-              value={currentText}
-              onChange={handleSetCurrent}
-            />
+      <div className="questions-container">
+        <form
+          id="question-form"
+          onSubmit={handleSubmit}
+          className="questionsForm"
+        >
+          <h1>{currentQuiz.title}</h1>
+          <div className="questionsDetails">
+            <div className="row">
+              <label htmlFor="question-text">Question text:</label>
+              <textarea
+                id="question-text"
+                value={currentText}
+                onChange={handleSetCurrent}
+                required
+              />
+            </div>
+            <div className="row">
+              <label htmlFor="feedback-true">Feedback if true:</label>
+              <textarea
+                id="feedback-true"
+                value={feedbackIfTrue}
+                onChange={handleFeedbackTrue}
+                required
+              />
+            </div>
+            <div className="row">
+              <label htmlFor="feedback-false">Feedback if false</label>
+              <textarea
+                id="feedback-true"
+                value={feedbackIfFalse}
+                onChange={handleFeedbackFalse}
+                required
+              />
+            </div>
           </div>
-          <div className="row">
-            <label htmlFor="feedback-true">Feedback if true:</label>
-            <textarea
-              id="feedback-true"
-              value={feedbackIfTrue}
-              onChange={handleFeedbackTrue}
-            />
-          </div>
-          <div className="row">
-            <label htmlFor="feedback-false">Feedback if false</label>
-            <textarea
-              id="feedback-true"
-              value={feedbackIfFalse}
-              onChange={handleFeedbackFalse}
-            />
-          </div>
-          <AnswersList answers={answers} setAnswers={setAnswers} />
-          {error && <p className="error">{error}</p>}
-        </div>
+        </form>
+        <AnswersList answers={answers} setAnswers={setAnswers} />
+        {error && <p className="error">{error}</p>}
         <div className="questions-footer">
           {currentQuestionIndex > 0 && (
             <button
@@ -181,22 +194,18 @@ const Question = () => {
             </button>
           )}
           {currentQuestionIndex < currentQuiz.questions_answers.length - 1 && (
-            <button
-              type="button"
-              className="link"
-              onClick={() => saveCurrentQuestion()}
-            >
+            <button type="submit" className="link" form="question-form">
               Next
             </button>
           )}
           {currentQuestionIndex ===
             currentQuiz.questions_answers.length - 1 && (
-            <button type="submit" className="link">
+            <button type="submit" className="link" form="question-form">
               Save Quiz
             </button>
           )}
         </div>
-      </form>
+      </div>
     </div>
   );
 };

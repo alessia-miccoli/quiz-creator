@@ -131,6 +131,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    background-color: #D3D3DE;
 }
 
 /* New Quiz Page */
@@ -161,17 +162,22 @@ input[type="radio"]{
 
 .questions {
     display: flex;
+    min-width: 50%;
+    flex-direction: column;
     padding: 20px;
 }
 
 .questionsForm {
+    justify-content: space-between;
+    background-color: #D3D3DE;
+    color: #231F20;
+}
+
+.questions-container {
     min-width: 50%;
     height: calc(100% - 20px);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    background-color: #D3D3DE;
-    color: #231F20;
 }
 
 .questionsForm h1 {

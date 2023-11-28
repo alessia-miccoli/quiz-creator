@@ -13,7 +13,10 @@ const AnswersList = ({ answers, setAnswers }) => {
     setCurrentText(e.target.value);
   };
 
-  const handleSaveAnswer = () => {
+  const handleSaveAnswer = (e) => {
+    debugger;
+    e.preventDefault();
+
     if (error) return;
 
     if (!itemToEditId) {
@@ -55,11 +58,17 @@ const AnswersList = ({ answers, setAnswers }) => {
       const correctAnswer = answers.find((answer) => answer.is_true).id;
       if (itemToEditId !== correctAnswer)
         setError("There can only be one correct answer.");
-    } else setError();
+    } else {
+      setError();
+    }
   }, [isCurrentCorrect]);
 
   return (
-    <div className="answersContainer">
+    <form
+      id="answers-form"
+      className="answersContainer"
+      onSubmit={handleSaveAnswer}
+    >
       <p>Answers:</p>
       {!answers && <div>No answers yet</div>}
 
@@ -70,6 +79,7 @@ const AnswersList = ({ answers, setAnswers }) => {
             id="question-text"
             value={currentText}
             onChange={handleSetCurrent}
+            required
           />
         </div>
         <div className="row">
@@ -95,9 +105,9 @@ const AnswersList = ({ answers, setAnswers }) => {
         {error && <p className="error">{error}</p>}
         <div className="button-container">
           <button
+            type="submit"
+            form="answers-form"
             className="button"
-            type="button"
-            onClick={handleSaveAnswer}
             disabled={!!error}
           >
             {itemToEditId ? "Save" : "Add"}
@@ -119,7 +129,7 @@ const AnswersList = ({ answers, setAnswers }) => {
           ))}
         </ul>
       )}
-    </div>
+    </form>
   );
 };
 
