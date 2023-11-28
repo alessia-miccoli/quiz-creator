@@ -9,11 +9,11 @@ const Home = () => {
 
   return (
     <div className="homepage">
-      <Link className="button" to={`/quiz-${quizzes.length + 1}`}>
+      <Link className="button" to={`/quiz-${quizzes?.length + 1}`}>
         Create New Quiz
       </Link>
       <div className="quiz-container">
-        {quizzes.length ? (
+        {quizzes?.length ? (
           <>
             {quizzes.map((quiz) => (
               <QuizCard key={quiz.id} quizInfo={quiz} />

@@ -22,7 +22,7 @@ const QuizCard = ({ quizInfo }) => {
           rel="noreferrer"
           onClick={(e) => e.stopPropagation()}
         >
-          Take quiz
+          Quiz URL
         </a>
       </footer>
     </div>

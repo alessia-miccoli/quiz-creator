@@ -106,8 +106,9 @@ const Question = () => {
     }
 
     setQuizzes((old) => {
-      debugger;
-      const quizIndex = quizzes.findIndex((quiz) => quiz.id === currentQuiz.id);
+      const quizIndex = quizzes?.findIndex(
+        (quiz) => quiz.id === currentQuiz.id
+      );
       let newQuizzez = [...old];
       if (quizIndex > -1) {
         newQuizzez[quizIndex] = updateLastQuestion();
@@ -166,20 +167,33 @@ const Question = () => {
             />
           </div>
           <AnswersList answers={answers} setAnswers={setAnswers} />
-          {error && <p>{error}</p>}
+          {error && <p className="error">{error}</p>}
         </div>
         <div className="questions-footer">
           {currentQuestionIndex > 0 && (
-            <Link to={`/${quizId}/question-${currentQuestionIndex}`}>Back</Link>
+            <button
+              className="link"
+              onClick={() =>
+                navigate(`/${quizId}/question-${currentQuestionIndex}`)
+              }
+            >
+              Prev
+            </button>
           )}
           {currentQuestionIndex < currentQuiz.questions_answers.length - 1 && (
-            <button type="button" onClick={() => saveCurrentQuestion()}>
+            <button
+              type="button"
+              className="link"
+              onClick={() => saveCurrentQuestion()}
+            >
               Next
             </button>
           )}
           {currentQuestionIndex ===
             currentQuiz.questions_answers.length - 1 && (
-            <button type="submit">Save Quiz</button>
+            <button type="submit" className="link">
+              Save Quiz
+            </button>
           )}
         </div>
       </form>

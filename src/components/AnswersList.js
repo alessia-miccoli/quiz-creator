@@ -60,6 +60,7 @@ const AnswersList = ({ answers, setAnswers }) => {
 
   return (
     <div className="answersContainer">
+      <p>Answers:</p>
       {!answers && <div>No answers yet</div>}
 
       <div className="answersForm">
@@ -91,7 +92,7 @@ const AnswersList = ({ answers, setAnswers }) => {
           />
           <label htmlFor="current-incorrect">Incorrect</label>
         </div>
-        {error && <p>{error}</p>}
+        {error && <p className="error">{error}</p>}
         <div className="button-container">
           <button
             className="button"

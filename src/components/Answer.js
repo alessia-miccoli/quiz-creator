@@ -28,13 +28,19 @@ const Answer = ({
 
   return (
     <li>
-      {text}
-      <button type="button" onClick={handleEditAnswer}>
-        Edit
-      </button>
-      <button type="button" onClick={handleRemove}>
-        Remove
-      </button>
+      <span>{text}</span>
+      <div className="buttonsContainer">
+        <button
+          type="button"
+          className="button-small"
+          onClick={handleEditAnswer}
+        >
+          Edit
+        </button>
+        <button type="button" className="button-small" onClick={handleRemove}>
+          Remove
+        </button>
+      </div>
     </li>
   );
 };
