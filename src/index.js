@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
   {
     element: <App />,
-    path: "/",
+    path: "/quiz-creator",
     children: [
       {
         index: true,

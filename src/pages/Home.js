@@ -17,7 +17,7 @@ const Home = () => {
         onClick={() => {
           setCurrentQuiz({});
           localStorage.setItem("currentQuiz", "{}");
-          navigate(`/quiz-${quizzes?.length + 1}`);
+          navigate(`/quiz-creator/quiz-${quizzes?.length + 1}`);
         }}
       >
         Create New Quiz

@@ -62,7 +62,7 @@ const Question = () => {
       localStorage.setItem("currentQuiz", JSON.stringify(newState));
       return newState;
     });
-    navigate(`/${quizId}/question-${currentQuestionIndex + 2}`);
+    navigate(`/quiz-creator/${quizId}/question-${currentQuestionIndex + 2}`);
   };
 
   const updateLastQuestion = () => {
@@ -118,7 +118,7 @@ const Question = () => {
       setCurrentQuiz({});
       localStorage.setItem("currentQuiz", "{}");
 
-      navigate("/");
+      navigate("/quiz-creator");
     } else {
       saveCurrentQuestion();
     }
@@ -185,7 +185,9 @@ const Question = () => {
             <button
               className="link"
               onClick={() =>
-                navigate(`/${quizId}/question-${currentQuestionIndex}`)
+                navigate(
+                  `/quiz-creator/${quizId}/question-${currentQuestionIndex}`
+                )
               }
             >
               Prev
