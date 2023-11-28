@@ -5,8 +5,9 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
-import NewQuiz from "./pages/NewQuiz";
-import Questions from "./pages/Questions";
+import Quiz from "./pages/Quiz";
+import Question from "./pages/Question";
+import { RecoilRoot } from "recoil";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -20,12 +21,12 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "new",
-        element: <NewQuiz />,
+        path: ":quizId/:questionId",
+        element: <Question />,
       },
       {
-        path: ":quizId/:questionId",
-        element: <Questions />,
+        path: ":quizId/",
+        element: <Quiz />,
       },
     ],
   },
@@ -33,8 +34,9 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
-    {/* <App /> */}
+    <RecoilRoot>
+      <RouterProvider router={router} />
+    </RecoilRoot>
   </React.StrictMode>
 );
 

@@ -1,13 +1,47 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import quizzesState from "../atoms/quizzesAtom";
+import currentQuizState from "../atoms/currentQuizAtom";
 
-const NewQuiz = () => {
-  const [numOfQuestions, setNumOfQuestions] = useState(5);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+// TODO: error check
+
+const Quiz = () => {
+  const quizzes = useRecoilValue(quizzesState);
+  const { quizId } = useParams();
+  const quiz_id = Number(quizId.split("-")[1]);
+  const quiz = quizzes.find((quiz) => quiz.id === quiz_id);
+  const [numOfQuestions, setNumOfQuestions] = useState(
+    quiz?.questions_answers.length || 5
+  );
+  const [title, setTitle] = useState(quiz?.title || "");
+  const [description, setDescription] = useState(quiz?.description || "");
+  const currentNumOfQuiz = useRecoilValue(quizzesState).length;
+
+  const createCurrentState = () => {
+    if (quiz) return quiz;
+
+    const questions_answers = Array.apply(
+      null,
+      Array(Number(numOfQuestions))
+    ).map((_, index) => ({
+      answer_id: index,
+      answers: [],
+    }));
+
+    const newQuiz = {
+      description,
+      id: currentNumOfQuiz + 1,
+      questions_answers,
+      score: null,
+      title,
+      url: "https://www.youtube.com/watch?v=e6EGQFJLl04",
+    };
+
+    return newQuiz;
+  };
+  const setCurrentQuiz = useSetRecoilState(currentQuizState);
   const navigate = useNavigate();
-
-  const currentNumOfQuiz = 3;
 
   const handleSetNumOfQuestions = (e) => {
     setNumOfQuestions(e.target.value);
@@ -23,8 +57,8 @@ const NewQuiz = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    navigate(`/quiz-${currentNumOfQuiz + 1}/question-0`);
+    setCurrentQuiz(createCurrentState());
+    navigate(`question-1`);
   };
 
   return (
@@ -66,4 +100,4 @@ const NewQuiz = () => {
   );
 };
 
-export default NewQuiz;
+export default Quiz;

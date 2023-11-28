@@ -8,7 +8,9 @@ const QuizCard = ({ quizInfo }) => {
   return (
     <div
       className="quiz-card"
-      onClick={() => navigate(`quiz-${id}/question-0`)}
+      onClick={() => {
+        navigate(`quiz-${id}`);
+      }}
     >
       <header className="quiz-header">{title}</header>
       <p className="quiz-description">{description}</p>

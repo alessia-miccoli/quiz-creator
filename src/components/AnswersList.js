@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Answer from "./Answer";
 import { useParams } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import quizzesState from "../atoms/quizzesAtom";
 
 const AnswersList = ({ answers, setAnswers }) => {
   const [currentText, setCurrentText] = useState("");
@@ -8,6 +10,7 @@ const AnswersList = ({ answers, setAnswers }) => {
   const [itemToEditId, setItemToEditId] = useState(null);
   const [error, setError] = useState();
   const { questionId } = useParams();
+  const setQuizzes = useSetRecoilState(quizzesState);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,7 +35,10 @@ const AnswersList = ({ answers, setAnswers }) => {
     } else {
       setAnswers((oldAnswers) => {
         const newAnswers = [...oldAnswers];
-        newAnswers[itemToEditId - 1] = {
+        const index = oldAnswers.findIndex(
+          (answer) => answer.id === itemToEditId
+        );
+        newAnswers[index] = {
           text: currentText,
           id: itemToEditId || oldAnswers.length + 1,
           is_true: isCurrentCorrect,
@@ -49,6 +55,7 @@ const AnswersList = ({ answers, setAnswers }) => {
 
   useEffect(() => {
     if (
+      answers &&
       answers.filter((answer) => answer.is_true).length === 1 &&
       isCurrentCorrect
     ) {
@@ -60,7 +67,7 @@ const AnswersList = ({ answers, setAnswers }) => {
 
   return (
     <div className="answersContainer">
-      {!answers.length && <div>No answers yet</div>}
+      {!answers && <div>No answers yet</div>}
 
       <div className="answersForm">
         <div className="row">
@@ -104,7 +111,7 @@ const AnswersList = ({ answers, setAnswers }) => {
         </div>
       </div>
 
-      {answers.length > 0 && (
+      {answers && (
         <ul className="answersList">
           {answers.map((answer) => (
             <Answer
@@ -113,6 +120,7 @@ const AnswersList = ({ answers, setAnswers }) => {
               setCurrentText={setCurrentText}
               setIsCurrentCorrect={setIsCurrentCorrect}
               setItemToEditId={setItemToEditId}
+              setAnswers={setAnswers}
             />
           ))}
         </ul>
