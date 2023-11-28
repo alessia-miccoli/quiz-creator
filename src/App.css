@@ -43,6 +43,7 @@ p {
 
 .error {
     color: #BB4430;
+    background-color: whitesmoke;
     padding-left: 10px;
 }
 

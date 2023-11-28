@@ -14,7 +14,6 @@ const AnswersList = ({ answers, setAnswers }) => {
   };
 
   const handleSaveAnswer = (e) => {
-    debugger;
     e.preventDefault();
 
     if (error) return;

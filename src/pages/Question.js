@@ -105,9 +105,7 @@ const Question = () => {
       return;
     }
 
-    if (currentQuestionIndex === currentQuiz.questions_answers.length) {
-      saveCurrentQuestion();
-    } else {
+    if (currentQuestionIndex === currentQuiz.questions_answers.length - 1) {
       setQuizzes((old) => {
         const quizIndex = quizzes?.findIndex(
           (quiz) => quiz.id === currentQuiz.id
@@ -121,12 +119,13 @@ const Question = () => {
         localStorage.setItem("quizzes", JSON.stringify(newQuizzez));
         return newQuizzez;
       });
+      setCurrentQuiz({});
+      localStorage.setItem("currentQuiz", "{}");
+
+      navigate("/");
+    } else {
+      saveCurrentQuestion();
     }
-
-    setCurrentQuiz({});
-    localStorage.setItem("currentQuiz", "{}");
-
-    navigate("/");
   };
 
   useEffect(() => {
