@@ -13,9 +13,15 @@ const Home = () => {
         Create New Quiz
       </Link>
       <div className="quiz-container">
-        {quizzes.length
-          ? quizzes.map((quiz) => <QuizCard key={quiz.id} quizInfo={quiz} />)
-          : "No quiz created yet"}
+        {quizzes.length ? (
+          <>
+            {quizzes.map((quiz) => (
+              <QuizCard key={quiz.id} quizInfo={quiz} />
+            ))}
+          </>
+        ) : (
+          <div className="no-quiz">No quiz created yet</div>
+        )}
       </div>
     </div>
   );

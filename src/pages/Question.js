@@ -9,7 +9,7 @@ const Question = () => {
   const { quizId, questionId } = useParams();
   const [quizzes, setQuizzes] = useRecoilState(quizzesState);
   const [currentQuiz, setCurrentQuiz] = useRecoilState(currentQuizState);
-  const currentQuestionIndex = Number(questionId.split("-")[1] - 1);
+  const currentQuestionIndex = Number(questionId.split("-")[1]) - 1;
   const currentQuestion = currentQuiz.questions_answers[currentQuestionIndex];
   const [answers, setAnswers] = useState(
     currentQuestion.answers.every((answer) => answer.id)
@@ -40,48 +40,81 @@ const Question = () => {
   };
 
   const saveCurrentQuestion = () => {
+    if (answers.length < 2) {
+      setError("There should be at least 2 answers");
+      return;
+    }
     if (!answers.find((answer) => answer.is_true)) {
       setError("At least one answer must be correct");
       return;
     } else {
+      setCurrentQuiz((old) => {
+        const newCurrentQuestion = {
+          ...currentQuestion,
+          answers,
+          feedback_false: feedbackIfFalse,
+          feedback_true: feedbackIfTrue,
+          text: currentText,
+        };
+
+        const newQuestions = [...old.questions_answers];
+
+        newQuestions.splice(currentQuestionIndex, 1, newCurrentQuestion);
+
+        const newState = {
+          ...old,
+          created: old.created || new Date(Date.now()).toLocaleString(),
+          modified: new Date(Date.now()).toLocaleString(),
+          questions_answers: newQuestions,
+        };
+        localStorage.setItem("currentQuiz", JSON.stringify(newState));
+        return newState;
+      });
       navigate(`/${quizId}/question-${currentQuestionIndex + 2}`);
     }
+  };
 
-    setCurrentQuiz((old) => {
-      const newCurrentQuestion = {
-        ...currentQuestion,
-        answers,
-        feedback_false: feedbackIfFalse,
-        feedback_true: feedbackIfTrue,
-        text: currentText,
-      };
+  const updateLastQuestion = () => {
+    const newCurrentQuestion = {
+      ...currentQuestion,
+      answers,
+      feedback_false: feedbackIfFalse,
+      feedback_true: feedbackIfTrue,
+      text: currentText,
+    };
 
-      const newQuestions = [...old.questions_answers];
+    const newQuestions = [...currentQuiz.questions_answers];
 
-      newQuestions.splice(currentQuestionIndex, 1, newCurrentQuestion);
+    newQuestions.splice(currentQuestionIndex, 1, newCurrentQuestion);
 
-      const newState = {
-        ...old,
-        created: old.created || new Date(Date.now()).toLocaleString(),
-        modified: new Date(Date.now()).toLocaleString(),
-        questions_answers: newQuestions,
-      };
+    const newState = {
+      ...currentQuiz,
+      created: currentQuiz.created || new Date(Date.now()).toLocaleString(),
+      modified: new Date(Date.now()).toLocaleString(),
+      questions_answers: newQuestions,
+    };
 
-      return newState;
-    });
+    return newState;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (answers.length < 2) {
+      setError("There should be at least 2 answers");
+      return;
+    }
+
     setQuizzes((old) => {
+      debugger;
       const quizIndex = quizzes.findIndex((quiz) => quiz.id === currentQuiz.id);
       let newQuizzez = [...old];
       if (quizIndex > -1) {
-        newQuizzez[quizIndex] = currentQuiz;
+        newQuizzez[quizIndex] = updateLastQuestion();
       } else {
         newQuizzez.push(currentQuiz);
       }
+      localStorage.setItem("quizzes", JSON.stringify(newQuizzez));
       return newQuizzez;
     });
 
@@ -139,12 +172,13 @@ const Question = () => {
           {currentQuestionIndex > 0 && (
             <Link to={`/${quizId}/question-${currentQuestionIndex}`}>Back</Link>
           )}
-          {currentQuestionIndex < quizzes.length - 1 && (
+          {currentQuestionIndex < currentQuiz.questions_answers.length - 1 && (
             <button type="button" onClick={() => saveCurrentQuestion()}>
               Next
             </button>
           )}
-          {currentQuestionIndex === quizzes.length - 1 && (
+          {currentQuestionIndex ===
+            currentQuiz.questions_answers.length - 1 && (
             <button type="submit">Save Quiz</button>
           )}
         </div>

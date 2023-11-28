@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Answer from "./Answer";
 import { useParams } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import quizzesState from "../atoms/quizzesAtom";
 
 const AnswersList = ({ answers, setAnswers }) => {
   const [currentText, setCurrentText] = useState("");
@@ -10,11 +8,6 @@ const AnswersList = ({ answers, setAnswers }) => {
   const [itemToEditId, setItemToEditId] = useState(null);
   const [error, setError] = useState();
   const { questionId } = useParams();
-  const setQuizzes = useSetRecoilState(quizzesState);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
 
   const handleSetCurrent = (e) => {
     setCurrentText(e.target.value);

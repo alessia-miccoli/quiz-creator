@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import quizzesState from "../atoms/quizzesAtom";
 import currentQuizState from "../atoms/currentQuizAtom";
 
@@ -11,11 +11,10 @@ const Quiz = () => {
   const { quizId } = useParams();
   const quiz_id = Number(quizId.split("-")[1]);
   const quiz = quizzes.find((quiz) => quiz.id === quiz_id);
-  const [numOfQuestions, setNumOfQuestions] = useState(
-    quiz?.questions_answers.length || 5
-  );
-  const [title, setTitle] = useState(quiz?.title || "");
-  const [description, setDescription] = useState(quiz?.description || "");
+  const [currentQuiz, setCurrentQuiz] = useRecoilState(currentQuizState);
+  const [numOfQuestions, setNumOfQuestions] = useState(5);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const currentNumOfQuiz = useRecoilValue(quizzesState).length;
 
   const createCurrentState = () => {
@@ -40,7 +39,6 @@ const Quiz = () => {
 
     return newQuiz;
   };
-  const setCurrentQuiz = useSetRecoilState(currentQuizState);
   const navigate = useNavigate();
 
   const handleSetNumOfQuestions = (e) => {
@@ -58,8 +56,19 @@ const Quiz = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setCurrentQuiz(createCurrentState());
+    localStorage.setItem("currentQuiz", JSON.stringify(createCurrentState()));
     navigate(`question-1`);
   };
+
+  useEffect(() => {
+    setCurrentQuiz(createCurrentState());
+  }, [quizId]);
+
+  useEffect(() => {
+    setTitle(currentQuiz?.title || "");
+    setDescription(currentQuiz?.description || "");
+    setNumOfQuestions(currentQuiz?.questions_answers.length || 5);
+  }, [currentQuiz]);
 
   return (
     <div className="newQuiz">
@@ -92,7 +101,7 @@ const Quiz = () => {
         </div>
         <div className="button-container">
           <button className="button" type="submit">
-            Start
+            {quiz ? "Edit" : "Start"}
           </button>
         </div>
       </form>
