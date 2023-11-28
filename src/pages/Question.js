@@ -40,38 +40,29 @@ const Question = () => {
   };
 
   const saveCurrentQuestion = () => {
-    if (answers.length < 2) {
-      setError("There should be at least 2 answers");
-      return;
-    }
-    if (!answers.find((answer) => answer.is_true)) {
-      setError("At least one answer must be correct");
-      return;
-    } else {
-      setCurrentQuiz((old) => {
-        const newCurrentQuestion = {
-          ...currentQuestion,
-          answers,
-          feedback_false: feedbackIfFalse,
-          feedback_true: feedbackIfTrue,
-          text: currentText,
-        };
+    setCurrentQuiz((old) => {
+      const newCurrentQuestion = {
+        ...currentQuestion,
+        answers,
+        feedback_false: feedbackIfFalse,
+        feedback_true: feedbackIfTrue,
+        text: currentText,
+      };
 
-        const newQuestions = [...old.questions_answers];
+      const newQuestions = [...old.questions_answers];
 
-        newQuestions.splice(currentQuestionIndex, 1, newCurrentQuestion);
+      newQuestions.splice(currentQuestionIndex, 1, newCurrentQuestion);
 
-        const newState = {
-          ...old,
-          created: old.created || new Date(Date.now()).toLocaleString(),
-          modified: new Date(Date.now()).toLocaleString(),
-          questions_answers: newQuestions,
-        };
-        localStorage.setItem("currentQuiz", JSON.stringify(newState));
-        return newState;
-      });
-      navigate(`/${quizId}/question-${currentQuestionIndex + 2}`);
-    }
+      const newState = {
+        ...old,
+        created: old.created || new Date(Date.now()).toLocaleString(),
+        modified: new Date(Date.now()).toLocaleString(),
+        questions_answers: newQuestions,
+      };
+      localStorage.setItem("currentQuiz", JSON.stringify(newState));
+      return newState;
+    });
+    navigate(`/${quizId}/question-${currentQuestionIndex + 2}`);
   };
 
   const updateLastQuestion = () => {
@@ -102,6 +93,11 @@ const Question = () => {
 
     if (answers.length < 2) {
       setError("There should be at least 2 answers");
+      return;
+    }
+
+    if (!answers.find((answer) => answer.is_true)) {
+      setError("At least one answer must be correct");
       return;
     }
 

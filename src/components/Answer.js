@@ -28,7 +28,10 @@ const Answer = ({
 
   return (
     <li>
-      <span>{text}</span>
+      <span>
+        {text}
+        {is_true && " (correct)"}
+      </span>
       <div className="buttonsContainer">
         <button
           type="button"

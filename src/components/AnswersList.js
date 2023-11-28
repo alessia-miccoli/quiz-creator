@@ -62,6 +62,12 @@ const AnswersList = ({ answers, setAnswers }) => {
     }
   }, [isCurrentCorrect]);
 
+  useEffect(() => {
+    setCurrentText("");
+    setIsCurrentCorrect(false);
+    setItemToEditId();
+  }, [questionId]);
+
   return (
     <form
       id="answers-form"
