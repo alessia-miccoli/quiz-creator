@@ -102,11 +102,12 @@ const Question = () => {
     }
 
     if (currentQuestionIndex === currentQuiz.questions_answers.length - 1) {
+      debugger;
       setQuizzes((old) => {
         const quizIndex = quizzes?.findIndex(
           (quiz) => quiz.id === currentQuiz.id
         );
-        let newQuizzez = [...old];
+        let newQuizzez = [...(old || [])];
         if (quizIndex > -1) {
           newQuizzez[quizIndex] = updateLastQuestion();
         } else {
